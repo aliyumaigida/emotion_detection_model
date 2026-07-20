@@ -1,9 +1,9 @@
 Django==5.2.16
 djangorestframework==3.16.1
 tensorflow==2.21.0
-opencv-python-headless==5.0.0.93
-numpy==2.5.1
-Pillow==12.3.0
-requests==2.34.2
+numpy==2.3.5
+opencv-python-headless
+Pillow
 gunicorn
 whitenoise
+requests
