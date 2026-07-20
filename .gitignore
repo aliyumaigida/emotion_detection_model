@@ -1,0 +1,8 @@
+venv_emotion/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+.env
+.vscode/
+.idea/
