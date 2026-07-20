@@ -25,7 +25,12 @@ SECRET_KEY = "django-insecure-$_jw33$61o!7y78uqb2#x@i#$2qlf#g4=jxt_@hrt9so8&yiy#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "emotion-detection-model-sdn1.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
