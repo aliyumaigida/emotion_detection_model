@@ -179,9 +179,7 @@ The model was evaluated using:
 
 Although the overall accuracy is moderate, the confusion matrix showed strong performance for Happy and Surprise while Fear remained the most challenging class.
 
----
-
-# 📈 Confusion Matrix Analysis
+# Confusion Matrix Analysis
 
 The confusion matrix revealed several important observations:
 
@@ -233,7 +231,7 @@ These similarities resulted in unavoidable classification errors despite fine-tu
 
 Different transfer learning models were explored.
 
-Models investigated included:
+Models investigated included and later remove the EfficientNetB0:
 
 - MobileNetV2
 - EfficientNetB0
@@ -259,7 +257,7 @@ Successfully resolving these issues provided valuable hands-on experience with m
 
 ---
 
-# 💾 Model Export
+# Model Export
 
 After training, the best-performing model was exported as:
 
@@ -271,7 +269,7 @@ This model is loaded directly by the Django application during prediction.
 
 ---
 
-# 🌐 Django Web Application
+# Django Web Application
 
 The trained model was integrated into a Django application.
 
@@ -286,7 +284,7 @@ Current features include:
 
 ---
 
-# 🚀 Deployment
+# Deployment
 
 The complete application was successfully deployed on **Render**.
 
@@ -300,9 +298,8 @@ Deployment stack:
 
 The deployed application performs inference on uploaded images in real time.
 
----
 
-# 💻 Technologies Used
+# Technologies Used
 
 ## Machine Learning
 
@@ -342,7 +339,7 @@ The deployed application performs inference on uploaded images in real time.
 
 ---
 
-# 📂 Repository Structure
+# Repository Structure
 
 emotion-detection-system/
 
@@ -370,7 +367,7 @@ emotion-detection-system/
 ├── README.md
 └── manage.py
 
-# 📸 Screenshots
+# Screenshots
 
 The repository contains screenshots of:
 
@@ -384,7 +381,7 @@ The repository contains screenshots of:
 
 ---
 
-# 📓 Training Notebook
+# Training Notebook
 
 The complete model development process is documented inside the `notebooks` folder.
 
@@ -402,7 +399,7 @@ The notebook includes:
 
 ---
 
-# 🔮 Future Improvements
+# Future Improvements
 
 Planned enhancements include:
 
@@ -417,7 +414,7 @@ Planned enhancements include:
 
 ---
 
-# 🎓 Lessons Learned
+# Lessons Learned
 
 This project strengthened my practical understanding of:
 
@@ -434,17 +431,15 @@ This project strengthened my practical understanding of:
 
 It also reinforced the importance of dataset quality, class balance, and proper evaluation when building production-ready AI systems.
 
----
 
-# 👨‍💻 About Me
+# About Me
 
 I am passionate about Artificial Intelligence, Machine Learning, Computer Vision, and Backend Development.
 
 I enjoy building end-to-end AI applications that move beyond experimentation into production deployment.
 
-My goal is to continue developing practical AI solutions that solve real-world problems while continuously expanding my skills in Machine Learning and MLOps.
+My goal is to continue developing practical AI solutions that solve real-world problems while continuously expanding my skills in Data science, Machine Learning and Machine Learning Operations.
 
----
 
 # ⭐ Support
 
