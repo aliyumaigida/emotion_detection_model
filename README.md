@@ -345,7 +345,7 @@ emotion-detection-system/
 
 │
 ├── ai_model/
-│   └── emotion_mobilenetv2.keras
+│   └── emotion_model.keras
 │
 ├── detector/
 │
