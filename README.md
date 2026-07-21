@@ -10,9 +10,9 @@
 
 ---
 
-# 🌐 Live Demo
+# Live Demo
 
-🚀 **Try the application here:**
+**Try the application here:**
 
 https://emotion-detection-model-sdn1.onrender.com
 
@@ -26,7 +26,7 @@ The application allows users to:
 
 ---
 
-# 📖 Project Overview
+# Project Overview
 
 This project demonstrates the complete machine learning lifecycle, from data collection and preprocessing to model deployment in a production-ready web application.
 
@@ -54,7 +54,7 @@ Unlike many academic projects that stop after model training, this project cover
 
 ---
 
-# 📂 Dataset
+# Dataset
 
 The dataset was obtained from Kaggle and consists of **59,099 facial images** across five emotion categories.
 
@@ -72,7 +72,7 @@ The dataset was obtained from Kaggle and consists of **59,099 facial images** ac
 
 ---
 
-# 🔍 Data Exploration
+# Data Exploration
 
 Before training, the dataset was inspected to:
 
@@ -85,7 +85,7 @@ This analysis helped determine whether additional techniques such as class weigh
 
 ---
 
-# 🧹 Data Preprocessing
+# Data Preprocessing
 
 The following preprocessing steps were applied:
 
@@ -104,7 +104,7 @@ To improve generalization, data augmentation was applied:
 
 ---
 
-# 🧠 Model Development
+# Model Development
 
 Instead of building a CNN from scratch, this project uses **Transfer Learning**.
 
@@ -114,7 +114,6 @@ Instead of building a CNN from scratch, this project uses **Transfer Learning**.
 
 Architecture:
 
-```
 Input Image (224×224×3)
         │
         ▼
@@ -134,13 +133,12 @@ Dense Layer (Softmax)
         │
         ▼
 Emotion Prediction
-```
+
 
 Transfer Learning significantly reduced training time while improving performance.
 
----
 
-# 🏋️ Model Training
+# Model Training
 
 Training was performed using:
 
@@ -158,9 +156,9 @@ Training techniques included:
 
 These techniques helped reduce overfitting and improve convergence.
 
----
 
-# 📊 Model Evaluation
+
+# Model Evaluation
 
 The model was evaluated using:
 
