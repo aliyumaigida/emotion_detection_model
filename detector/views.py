@@ -1,24 +1,22 @@
 from PIL import Image
 import json
 import base64
-import cv2
-import numpy as np
 from io import BytesIO
+
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+
 from .forms import ImageUploadForm
 from .predictor import predict_emotion
-from django.core.files.storage import FileSystemStorage
-from .predictor import predict_emotion
 from .face_detector import detect_face
-from detector.face_landmarks import detect_landmarks
-from detector.face_landmarks import detect_landmarks
+
 
 def home(request):
     return render(request, "home.html")
 
+
 def upload_image(request):
-    
 
     emotion = None
     confidence = None
@@ -27,7 +25,10 @@ def upload_image(request):
 
     if request.method == "POST":
 
-        form = ImageUploadForm(request.POST, request.FILES)
+        form = ImageUploadForm(
+            request.POST,
+            request.FILES
+        )
 
         if form.is_valid():
 
@@ -37,7 +38,10 @@ def upload_image(request):
             # Save image to media/uploads
             fs = FileSystemStorage()
 
-            filename = fs.save(f"uploads/{uploaded_image.name}", uploaded_image)
+            filename = fs.save(
+                f"uploads/{uploaded_image.name}",
+                uploaded_image
+            )
 
             image_url = fs.url(filename)
 
@@ -45,7 +49,9 @@ def upload_image(request):
             image = Image.open(uploaded_image)
 
             # Predict emotion
-            emotion, confidence, probabilities = predict_emotion(image)
+            emotion, confidence, probabilities = predict_emotion(
+                image
+            )
 
     else:
 
@@ -65,16 +71,10 @@ def upload_image(request):
         context
     )
 
+
 def webcam(request):
     return render(request, "webcam.html")
 
-                base64.b64decode(image_data)
-            )
-        ).convert("RGB")
-
-        # --------------------------------
-        # 1. Face Detection
-        # --------------------------------
 
 def predict_live(request):
 
@@ -148,7 +148,10 @@ def predict_live(request):
 
         except Exception as e:
 
-            print("LIVE PREDICTION ERROR:", str(e))
+            print(
+                "LIVE PREDICTION ERROR:",
+                str(e)
+            )
 
             return JsonResponse({
 
