@@ -9,7 +9,11 @@ from django.shortcuts import render
 from .forms import ImageUploadForm
 from .predictor import predict_emotion
 from django.core.files.storage import FileSystemStorage
+from .predictor import predict_emotion
+from .face_detector import detect_face
+import mediapipe as mp
 
+from detector.face_landmarks import detect_landmarks
 
 def home(request):
     return render(request, "home.html")
@@ -73,19 +77,85 @@ def predict_live(request):
 
         image_data = data["image"]
 
-        # Remove the Base64 header
         image_data = image_data.split(",")[1]
 
         image = Image.open(
-            BytesIO(base64.b64decode(image_data))
+            BytesIO(
+                base64.b64decode(image_data)
+            )
+        ).convert("RGB")
+
+        # --------------------------------
+        # 1. Face Detection
+        # --------------------------------
+
+        face, bbox = detect_face(image)
+
+        if face is None:
+
+            return JsonResponse({
+                "face_detected": False,
+                "emotion": None,
+                "confidence": 0,
+                "probabilities": {},
+                "bbox": None,
+                "landmarks": []
+            })
+
+        # --------------------------------
+        # 2. Emotion Prediction
+        # --------------------------------
+
+        emotion, confidence, probabilities = predict_emotion(face)
+
+        # --------------------------------
+        # 3. Facial Landmarks
+        # --------------------------------
+
+        image_np = np.array(image)
+
+        mp_image = mp.Image(
+            image_format=mp.ImageFormat.SRGB,
+            data=image_np
         )
 
-        emotion, confidence, probabilities = predict_emotion(image)
+        landmarks = detect_landmarks(mp_image)
+
+        landmark_data = []
+
+        if landmarks:
+
+            for landmark in landmarks:
+
+                landmark_data.append({
+                    "x": landmark.x,
+                    "y": landmark.y,
+                    "z": landmark.z
+                })
+
+        # --------------------------------
+        # 4. Send response
+        # --------------------------------
 
         return JsonResponse({
+
+            "face_detected": True,
+
             "emotion": emotion,
-            "confidence": round(confidence, 2),
-            "probabilities": probabilities
+
+            "confidence": round(
+                confidence,
+                2
+            ),
+
+            "probabilities": probabilities,
+
+            "bbox": bbox,
+
+            "landmarks": landmark_data
+
         })
 
-    return JsonResponse({"error": "Invalid Request"})
+    return JsonResponse({
+        "error": "Invalid Request"
+    })
