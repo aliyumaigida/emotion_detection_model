@@ -11,8 +11,7 @@ from .predictor import predict_emotion
 from django.core.files.storage import FileSystemStorage
 from .predictor import predict_emotion
 from .face_detector import detect_face
-import mediapipe as mp
-
+from detector.face_landmarks import detect_landmarks
 from detector.face_landmarks import detect_landmarks
 
 def home(request):
@@ -69,18 +68,6 @@ def upload_image(request):
 def webcam(request):
     return render(request, "webcam.html")
 
-def predict_live(request):
-
-    if request.method == "POST":
-
-        data = json.loads(request.body)
-
-        image_data = data["image"]
-
-        image_data = image_data.split(",")[1]
-
-        image = Image.open(
-            BytesIO(
                 base64.b64decode(image_data)
             )
         ).convert("RGB")
@@ -89,73 +76,98 @@ def predict_live(request):
         # 1. Face Detection
         # --------------------------------
 
-        face, bbox = detect_face(image)
+def predict_live(request):
 
-        if face is None:
+    if request.method == "POST":
 
-            return JsonResponse({
-                "face_detected": False,
-                "emotion": None,
-                "confidence": 0,
-                "probabilities": {},
-                "bbox": None,
-                "landmarks": []
-            })
+        try:
 
-        # --------------------------------
-        # 2. Emotion Prediction
-        # --------------------------------
+            data = json.loads(request.body)
 
-        emotion, confidence, probabilities = predict_emotion(face)
+            image_data = data["image"]
 
-        # --------------------------------
-        # 3. Facial Landmarks
-        # --------------------------------
+            # Remove "data:image/jpeg;base64," part
+            image_data = image_data.split(",")[1]
 
-        image_np = np.array(image)
+            # Decode image
+            image = Image.open(
+                BytesIO(
+                    base64.b64decode(image_data)
+                )
+            ).convert("RGB")
 
-        mp_image = mp.Image(
-            image_format=mp.ImageFormat.SRGB,
-            data=image_np
-        )
+            # --------------------------------
+            # 1. FACE DETECTION
+            # --------------------------------
 
-        landmarks = detect_landmarks(mp_image)
+            face, bbox = detect_face(image)
 
-        landmark_data = []
+            # No face detected
+            if face is None:
 
-        if landmarks:
-
-            for landmark in landmarks:
-
-                landmark_data.append({
-                    "x": landmark.x,
-                    "y": landmark.y,
-                    "z": landmark.z
+                return JsonResponse({
+                    "face_detected": False,
+                    "emotion": None,
+                    "confidence": 0,
+                    "probabilities": {},
+                    "bbox": None,
+                    "landmarks": []
                 })
 
-        # --------------------------------
-        # 4. Send response
-        # --------------------------------
+            # --------------------------------
+            # 2. EMOTION PREDICTION
+            # --------------------------------
 
-        return JsonResponse({
+            emotion, confidence, probabilities = predict_emotion(
+                face
+            )
 
-            "face_detected": True,
+            # --------------------------------
+            # 3. RESPONSE
+            # --------------------------------
 
-            "emotion": emotion,
+            return JsonResponse({
 
-            "confidence": round(
-                confidence,
-                2
-            ),
+                "face_detected": True,
 
-            "probabilities": probabilities,
+                "emotion": emotion,
 
-            "bbox": bbox,
+                "confidence": round(
+                    confidence,
+                    2
+                ),
 
-            "landmarks": landmark_data
+                "probabilities": probabilities,
 
-        })
+                "bbox": bbox,
+
+                # Landmarks temporarily disabled
+                "landmarks": []
+
+            })
+
+        except Exception as e:
+
+            print("LIVE PREDICTION ERROR:", str(e))
+
+            return JsonResponse({
+
+                "error": str(e),
+
+                "face_detected": False,
+
+                "emotion": None,
+
+                "confidence": 0,
+
+                "probabilities": {},
+
+                "bbox": None,
+
+                "landmarks": []
+
+            }, status=500)
 
     return JsonResponse({
         "error": "Invalid Request"
-    })
+    }, status=400)
