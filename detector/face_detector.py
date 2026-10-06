@@ -23,7 +23,7 @@ MODEL_PATH = os.path.join(
 
 
 # --------------------------------------------------
-# CREATE FACE DETECTOR
+# MEDIAPIPE CONFIGURATION
 # --------------------------------------------------
 
 BaseOptions = mp.tasks.BaseOptions
@@ -32,15 +32,33 @@ FaceDetectorOptions = mp.tasks.vision.FaceDetectorOptions
 RunningMode = mp.tasks.vision.RunningMode
 
 
-options = FaceDetectorOptions(
-    base_options=BaseOptions(
-        model_asset_path=MODEL_PATH
-    ),
-    running_mode=RunningMode.IMAGE,
-    min_detection_confidence=0.5
-)
+# --------------------------------------------------
+# DETECTOR
+# --------------------------------------------------
 
-detector = FaceDetector.create_from_options(options)
+detector = None
+
+
+def get_detector():
+    """
+    Create the MediaPipe face detector only when it is needed.
+    """
+
+    global detector
+
+    if detector is None:
+
+        options = FaceDetectorOptions(
+            base_options=BaseOptions(
+                model_asset_path=MODEL_PATH
+            ),
+            running_mode=RunningMode.IMAGE,
+            min_detection_confidence=0.5
+        )
+
+        detector = FaceDetector.create_from_options(options)
+
+    return detector
 
 
 # --------------------------------------------------
@@ -57,6 +75,9 @@ def detect_face(image):
         bbox
     """
 
+    # Get MediaPipe detector
+    face_detector = get_detector()
+
     # Convert to RGB
     image = image.convert("RGB")
 
@@ -70,7 +91,7 @@ def detect_face(image):
     )
 
     # Detect faces
-    result = detector.detect(mp_image)
+    result = face_detector.detect(mp_image)
 
     # No face
     if not result.detections:
