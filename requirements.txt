@@ -3,7 +3,6 @@ djangorestframework==3.16.1
 
 tensorflow==2.21.0
 keras==3.15.0
-mediapipe==0.10.21
 
 numpy==2.3.5
 opencv-python-headless
